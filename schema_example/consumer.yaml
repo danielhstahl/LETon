@@ -8,7 +8,7 @@ customer:
 
     - name: first_name
       topic: topic_with_id
-      key: name.first # nested JSON from kafka, for example
+      key: name.first # nested JSON from kafka, for example.
       type: string
     - name: last_name
       topic: topic_with_id
@@ -40,7 +40,7 @@ address:
       topic: derived ## not a fan of this approach...
       update: insert_only # should not be any upserts
 
-relationships: # in source system, or "application" layer, this might be 
+relationships: # in source system, or "application" layer, this might be deeply nested.  Or graph database?
   fields:
     - name: id
       topic: topic_with_id
@@ -49,6 +49,6 @@ relationships: # in source system, or "application" layer, this might be
       constraint: primary_key 
     - name: dependent_id
       topic: topic_with_id
-      key: dependent_id # hmm, this would actually be difficult to tease out from source system.  This could require complex logic to extract.  Custom logic??  This could be an array if we write to a low latency store
+      key: dependent_id # this would actually be difficult to tease out from source system.  This could require complex logic to extract.  Custom logic??  This could be an array if we write to a low latency store
       type: string
       constraint: primary_key 

@@ -4,7 +4,7 @@ This library focuses on the "E" of the [LET](https://medium.com/@danstahl1138/le
 
 ### Design principles
 
-Human readable YAML to define data "objects".  This should be created in a "whiteboarding" session with the appropriate stakeholders.
+Human readable YAML to define entities which are represented by data.  This should be created in a "whiteboarding" session with the appropriate stakeholders.
 
 ### Architecture
 
@@ -20,7 +20,7 @@ Assumed that there exists a CDC abstraction that pushes deltas to Kafka topic(s)
 
 * Will this library facilitate creation of this "output" topic?  
 
-* How to handle complex transformations?  Completely arbitrary/custom?  Or prebuilt?  See the [example](./schema_example/consumer.yaml).
+* How to handle complex transformations?  Completely arbitrary/custom?  Or prebuilt?  See the [example](./schema_example/consumer.yaml) for areas which may need complex logic.
 
 ## Alternative approaches considered and discarded
 
