@@ -1,0 +1,54 @@
+customer:
+  fields:
+    - name: id 
+      topic: topic_with_id # example, would be fully qualified topic
+      key: src_id 
+      type: string
+      constraint: primary_key # forces upsert
+
+    - name: first_name
+      topic: topic_with_id
+      key: name.first # nested JSON from kafka, for example
+      type: string
+    - name: last_name
+      topic: topic_with_id
+      key: name.last
+      type: string
+    - name: current_address # this would be more complex, eg city/state/zip/street.  using string for simplicity.  Note that we save a history of this, but in a separate table; see address below
+      topic: topic_with_address
+      key: address
+      type: string
+    - name: date_first_created
+      topic: derived #how to manage this?  I want this to be populated on insert only, not on update.  How can we have arbitrary functions?  Or would we just have a lot of built-in transformations (shudder)
+      update: insert_only # ??
+      type: date # should this be destination agnostic?  eg aws has an awsdatetime, should we have a "function" which maps date to the appropriate destination type?
+
+    
+address:
+  fields:
+    - name: id
+      topic: topic_with_id
+      key: src_id
+      type: string
+      constraint: primary_key
+    - name: address_id
+      topic: topic_with_address
+      key: address_id # derived, eg from sha256 or base64 of all address fields concatenated together?
+      type: string
+      constraint: primary_key # multi-key primary key
+    - name: date_updated
+      topic: derived ## not a fan of this approach...
+      update: insert_only # should not be any upserts
+
+relationships: # in source system, or "application" layer, this might be 
+  fields:
+    - name: id
+      topic: topic_with_id
+      key: src_id
+      type: string
+      constraint: primary_key 
+    - name: dependent_id
+      topic: topic_with_id
+      key: dependent_id # hmm, this would actually be difficult to tease out from source system.  This could require complex logic to extract.  Custom logic??  This could be an array if we write to a low latency store
+      type: string
+      constraint: primary_key 
